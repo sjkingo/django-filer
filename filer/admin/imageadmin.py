@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 from django import forms
-from django.utils.translation import string_concat
+from django.utils.text import format_lazy
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
@@ -67,13 +67,13 @@ class ImageAdminForm(forms.ModelForm):
             return subject_location
 
         self._set_previous_subject_location(cleaned_data)
-        raise forms.ValidationError(
-            string_concat(
-                err_msg,
-                ugettext_lazy('Your input: "{subject_location}". '.format(
-                    subject_location=subject_location)),
-                'Previous value is restored.'),
-            code=err_code)
+        strings = [
+            err_msg,
+            ugettext_lazy('Your input: "{subject_location}". '.format(
+                subject_location=subject_location)),
+            'Previous value is restored.',
+        ]
+        raise forms.ValidationError(format_lazy('{}' * len(strings), *strings), code=err_code)
 
     class Meta(object):
         model = Image
