@@ -26,7 +26,7 @@ class AdminFolderWidget(ForeignKeyRawIdWidget):
     input_type = 'hidden'
     is_hidden = False
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         obj = self.obj_for_value(value)
         css_id = attrs.get('id')
         css_id_folder = "%s_folder" % css_id
@@ -52,7 +52,7 @@ class AdminFolderWidget(ForeignKeyRawIdWidget):
             # The JavaScript looks for this hook.
             attrs['class'] = 'vForeignKeyRawIdAdminField'
         super_attrs = attrs.copy()
-        hidden_input = super(ForeignKeyRawIdWidget, self).render(name, value, super_attrs)
+        hidden_input = super().render(name, value, super_attrs, renderer=renderer)
 
         # TODO: "id_" is hard-coded here. This should instead use the correct
         # API to determine the ID dynamically.

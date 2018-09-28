@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 class AdminFileWidget(ForeignKeyRawIdWidget):
     choices = None
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         obj = self.obj_for_value(value)
         css_id = attrs.get('id', 'id_image_x')
         related_url = None
@@ -59,7 +59,7 @@ class AdminFileWidget(ForeignKeyRawIdWidget):
         # rendering the super for ForeignKeyRawIdWidget on purpose here because
         # we only need the input and none of the other stuff that
         # ForeignKeyRawIdWidget adds
-        hidden_input = super(ForeignKeyRawIdWidget, self).render(name, value, attrs)
+        hidden_input = super().render(name, value, attrs, renderer=renderer)
         context = {
             'hidden_input': hidden_input,
             'lookup_url': '%s%s' % (related_url, lookup_url),
